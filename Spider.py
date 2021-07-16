@@ -111,54 +111,54 @@ def saveData(datalist, savepath):
     book.save(savepath)
 
 
-# def saveData2DB(datalist, dbpath):
-#     init_db(dbpath)
-#     coon = sqlite3.connect(dbpath)
-#     cur = coon.cursor()
-#
-#     for data in datalist:
-#         for index in range(len(data)):
-#             if index == 4 or index ==5:
-#                 continue
-#             data[index] = '"'+data[index]+'"'
-#         sql = '''
-#             insert into top250movie (
-#             info_link,pic_link,Chinese name,Foreign name,rating,nums,introduction,db)
-#             values('%s')''' % ",".join(data)
-#         cur.execute(sql)
-#         coon.commit()
-#     cur.close()
-#     coon.close()
-#
-#
-# def init_db(dbpath):
-#     sql = '''
-#         create table top250movie
-#         (id integer primary key autoincrement,
-#         info_link text,
-#         pic_link text,
-#         Chinese name varchar,
-#         Foreign name varchar,
-#         rating numeric,
-#         nums numeric,
-#         introduction text,
-#         db text
-#         )
-#     '''  # 创建数据表
-#     coon = sqlite3.connect(dbpath)
-#     cursor = coon.cursor()
-#     cursor.execute(sql)
-#     coon.commit()
-#     coon.close()
+def saveData2DB(datalist, dbpath):
+    init_db(dbpath)
+    coon = sqlite3.connect(dbpath)
+    cur = coon.cursor()
+
+    for data in datalist:
+        for index in range(len(data)):
+            if index == 4 or index == 5:
+                continue
+            data[index] = '"'+data[index]+'"'
+        sql = '''
+            insert into movie250 (
+            info_link,pic_link,cname,ename,score,rated,introduction,info)
+            values(%s)''' % ",".join(data)
+        cur.execute(sql)
+        coon.commit()
+    cur.close()
+    coon.close()
+
+
+def init_db(dbpath):
+    sql = '''
+        create table movie250
+        (id integer primary key autoincrement,
+        info_link text,
+        pic_link text,
+        cname varchar,
+        ename varchar,
+        score numeric,
+        rated numeric,
+        introduction text,
+        info text
+        )
+    '''  # 创建数据表
+    coon = sqlite3.connect(dbpath)
+    cursor = coon.cursor()
+    cursor.execute(sql)
+    coon.commit()
+    coon.close()
 
 
 def main():
     baseurl = "https://movie.douban.com/top250?start="
     datalist = getDate(baseurl)
-    savepath = "豆瓣电影top250.xls"
-    saveData(datalist, savepath)
-    # dbpath = "movie.db"
-    # saveData2DB(datalist, dbpath)
+    # savepath = "豆瓣电影top250.xls"
+    # saveData(datalist, savepath)
+    dbpath = "movie.db"
+    saveData2DB(datalist, dbpath)
 
 
 if __name__ == '__main__':
